@@ -1,0 +1,47 @@
+﻿@model EasyEGE.ViewModels.ProblemViewModel
+@{
+    ViewData["Title"] = "Добавить задание";
+}
+
+<div class="text-center">
+    <div class="container register-form">
+        <div class="note">Добавить задание</div>
+
+        <form class="form-content" asp-action="AddTask" asp-controller="Subject" enctype="multipart/form-data" method="post">
+            <div class="validation" asp-validation-summary="ModelOnly" />
+            <label>Выберите предмет</label><br />
+            <select asp-for="Subject" class="form-control">
+                @foreach (var subject in Model.Subjects)
+                {
+                    <option value="@subject">@subject</option>
+                }
+                <option selected hidden value="@Model.Subject">@Model.Subject</option>
+            </select>
+            <div class="form-group">
+                <label>Введите номер задания</label><br />
+                <input class="form-control" type="text" asp-for="Number"/>
+                <span asp-validation-for="Number"></span>
+            </div>
+            <div class="form-group">
+                <label>Добавьте условие (Чтобы добавить несколько файлов используйте Ctrl)</label><br />
+                <input type="file" class="form-control-file" multiple asp-for="Condition"/>
+                <span asp-validation-for="Condition"></span>
+            </div>
+            <div class="form-group">
+                <label>Добавьте решение</label><br />
+                <input type="file" class="form-control-file" multiple asp-for="Solve"/>
+            </div>
+            <div class="form-group">
+                <label>Введите ответ (Если это вторая часть, пропустите)</label><br />
+                <input type="text" class="form-control" asp-for="Answer"/>
+            </div>
+            <div>
+                <button type="submit" class="btnSubmit">Добавить задание</button>
+            </div>
+        </form>
+        <span asp-validation-for="Solve"></span>
+        <span asp-validation-for="Subject"></span>
+        <span asp-validation-for="Answer"></span>
+    </div>
+</div>
+

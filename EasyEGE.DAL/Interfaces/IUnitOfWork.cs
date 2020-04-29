@@ -1,5 +1,6 @@
 ﻿using EasyEGE.DAL.Entities;
 using System;
+using System.Threading.Tasks;
 
 namespace EasyEGE.DAL.Interfaces
 {
@@ -11,5 +12,6 @@ namespace EasyEGE.DAL.Interfaces
         IRepository<ProblemOption> ProblemOptions { get; }
         IRepository<Subject> Subject { get; }
         void Save();
+        Task SaveAsync();
     }
 }

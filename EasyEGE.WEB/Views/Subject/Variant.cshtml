@@ -1,0 +1,32 @@
+﻿@model EasyEGE.ViewModels.VariantViewModel
+
+@{
+    ViewData["Title"] = ViewBag.Subject;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Вариант по предмету "@ViewBag.Subject"</h1>
+    <h2 class="display-3">Вариант составил пользователь - @Model.UserName</h2>
+    <form class="form-content" method="post" asp-action="RandomTest" asp-controller="Subject">
+        @for (int i = 0; i < Model.Problems.Count; i++)
+        {
+            <div class="text-left border border-primary p-2 mb-2">
+                <h4>№@(Model.Problems[i].Id) - Задание @Model.Problems[i].Number<br /></h4>
+                @{
+                    var pictureOfConditions = Model.Pictures.Where(p => p.ProblemId == Model.Problems[i].Id && p.IsSolve == false);
+                    foreach (var picture in pictureOfConditions)
+                    {
+                        <div class="text-center">
+                            <img style='max-height: 150px; max-width: 100%; min-height: 60px' src="data:image/jpeg;base64,@(Convert.ToBase64String(picture.Content))" alt="@(picture.Alt)" />
+                        </div>
+                    }
+                }
+                <br />
+                <input class="form-control" name="answers" />
+                <input hidden name="problemsid" />
+            </div>
+        }
+        <button type="submit" class="btnSubmit">Проверить ответы</button>
+    </form>
+</div>
+

@@ -1,26 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using EasyEGE.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using EasyEGE.WEB.Models;
+using System.Linq;
+using EasyEGE.ViewModels;
+using EasyEGE.BLL.Interfaces;
+using EasyEGE.BLL.Services;
 
-namespace EasyEGE.WEB.Controllers
+namespace EasyEGE.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private ISubjectService subjectService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ISubjectService service)
         {
-            _logger = logger;
+            subjectService = service;
         }
 
         public IActionResult Index()
         {
-            return View();
+            HomePageViewModel model = new HomePageViewModel
+            {
+                MathId = subjectService.GetSubject("Математика").Id,
+                ComputerScienceId = subjectService.GetSubject("Информатика").Id,
+                PhysicsId = subjectService.GetSubject("Физика").Id,
+                RussianId = subjectService.GetSubject("Русский язык").Id
+            };
+            return View(model);
         }
 
         public IActionResult Privacy()

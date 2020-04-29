@@ -1,0 +1,35 @@
+﻿@model EasyEGE.ViewModels.AnswerViewModel
+@{
+    ViewData["Title"] = ViewBag.Subject;
+}
+<div class="text-center">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Номер задания</th>
+                <th scope="col">Ваш ответ</th>
+                <th scope="col">Правильный ответ</th>
+                <th scope="col">Результат</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var problem in Model.Problems)
+            {
+                <tr>
+                    <th scope="row">@(problem.Number)</th>
+                    <td>@Model.Answers[problem.Number - 1]</td>
+                    <td>@problem.Answer</td>
+                    @if (Model.Answers[problem.Number - 1] == problem.Answer)
+                    {
+                        <td class="text-success">Правильно</td>
+                    }
+                    else
+                    {
+                        <td class="text-danger">Неправильно</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

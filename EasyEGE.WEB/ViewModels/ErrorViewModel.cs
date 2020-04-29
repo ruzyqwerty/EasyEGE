@@ -1,6 +1,6 @@
 using System;
 
-namespace EasyEGE.WEB.Models
+namespace EasyEGE.Models
 {
     public class ErrorViewModel
     {

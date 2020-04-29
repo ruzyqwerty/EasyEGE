@@ -3,14 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyEGE.WEB", "EasyEGE.WEB\EasyEGE.WEB.csproj", "{9402A2CA-6F2F-48B4-8D34-E3BCC8CA2953}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyEGE.WEB", "EasyEGE.WEB\EasyEGE.WEB.csproj", "{9402A2CA-6F2F-48B4-8D34-E3BCC8CA2953}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyEGE.DAL", "EasyEGE.DAL\EasyEGE.DAL.csproj", "{F6A5A56B-352A-4EA1-91CB-A7BB5017300A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyEGE.DAL", "EasyEGE.DAL\EasyEGE.DAL.csproj", "{F6A5A56B-352A-4EA1-91CB-A7BB5017300A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{88D841FC-F3F7-4956-A4CA-7AF82B54620F}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyEGE.BLL", "EasyEGE.BLL\EasyEGE.BLL.csproj", "{79FDFF42-DBB0-455C-8168-E8A67CB437E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{F6A5A56B-352A-4EA1-91CB-A7BB5017300A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6A5A56B-352A-4EA1-91CB-A7BB5017300A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6A5A56B-352A-4EA1-91CB-A7BB5017300A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79FDFF42-DBB0-455C-8168-E8A67CB437E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79FDFF42-DBB0-455C-8168-E8A67CB437E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79FDFF42-DBB0-455C-8168-E8A67CB437E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79FDFF42-DBB0-455C-8168-E8A67CB437E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyEGE.DAL.Repositories
 {
@@ -16,10 +17,11 @@ namespace EasyEGE.DAL.Repositories
         private ProblemRepository problemRepository;
         private SubjectRepository subjectRepository;
 
-        public UnitOfWork(DbContextOptions<ApplicationContext> options)
+        public UnitOfWork(ApplicationContext context)
         {
-            db = new ApplicationContext(options);
+            db = context;
         }
+
         public IRepository<Option> Options
         {
             get
@@ -73,6 +75,11 @@ namespace EasyEGE.DAL.Repositories
         public void Save()
         {
             db.SaveChanges();
+        }
+
+        public async Task SaveAsync()
+        {
+            await db.SaveChangesAsync();
         }
 
         private bool disposed = false;

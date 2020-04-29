@@ -1,0 +1,64 @@
+﻿@model EasyEGE.ViewModels.AddOptionViewModel
+@{
+    ViewData["Title"] = "Составить вариант";
+}
+
+<div class="text-center">
+    <div class="container register-form">
+        <div class="note">Составить вариант</div>
+        <form asp-controller="Subject" asp-action="AddOption" method="get">
+            <label>Выберите предмет</label><br />
+            <select asp-for="Subject" class="form-control">
+                @foreach (var subject in Model.Subjects)
+                {
+                    <option value="@subject.Name">@subject.Name</option>
+                }
+                <option selected hidden value="@Model.Subject">@Model.Subject</option>
+            </select>
+            <label>Напишите номер задания для поиска</label><br />
+            <input class="form-control" type="text" asp-for="Number" />
+            <input class="btn-light" type="submit" value="Filter" />
+        </form>
+        <br />
+        <form class="form-content" asp-action="AddOption" asp-controller="Subject" enctype="multipart/form-data" method="post">
+            <div class="validation" asp-validation-summary="ModelOnly" />
+            @for (int i = 0; i < Model.Problems.Count; i++)
+            {
+                var pictures = Model.Pictures.Where(p => p.ProblemId == Model.Problems[i].Id);
+                <div class="text-left border border-primary p-2 mb-2">
+                    <h4>№@(i + 1) - Задание @Model.Problems[i].Number<br /></h4>
+                    @{
+                        var picturesOfCondition = pictures.Where(p => p.IsSolve == false);
+                        foreach (var picture in picturesOfCondition)
+                        {
+                            <div class="text-center">
+                                <img style='max-height: 150px; max-width: 100%; min-height: 60px' src="data:image/jpeg;base64,@(Convert.ToBase64String(picture.Content))" alt="@(picture.Alt)" />
+                            </div>
+                        }
+                    }
+                    <br />
+                    <button class="themeBtn4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Показать решение
+                    </button>
+                    <input type="checkbox" name="usingProblemsId" value="@Model.Problems[i].Id") />Использовать в варианте? <br />
+                        <div class="dropdown-menu">
+                            @{
+                                var picturesOfSolve = pictures.Where(p => p.IsSolve == true);
+                                foreach (var picture in picturesOfSolve)
+                                {
+                                    <div class="text-center">
+                                        <img style='max-height: 150px; max-width: 100%; min-height: 60px' src="data:image/jpeg;base64,@(Convert.ToBase64String(picture.Content))" alt="@(picture.Alt)" />
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <br />
+                        @if (!(String.IsNullOrWhiteSpace(Model.Problems[i].Answer)))
+                        {<h4>Ответ: @Model.Problems[i].Answer</h4>}
+                    </div>
+                }
+                <input class="btnSubmit" type="submit" value="Составить вариант"/>
+        </form>
+    </div>
+</div>
+

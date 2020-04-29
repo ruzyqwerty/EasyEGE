@@ -1,0 +1,41 @@
+﻿@model EasyEGE.ViewModels.RandomTestViewModel
+
+@{
+    ViewData["Title"] = ViewBag.Subject;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Случайный вариант по предмету"@ViewBag.Subject"</h1>
+    @if (Model.ProblemIds.Count == 0)
+    {
+        <h2 class="display-4">К сожалению, задач ещё нет, обратитесь к модератору для добавления задания!</h2>
+    }
+    else
+    {
+        <form class="form-content" method="post" asp-action="RandomTest" asp-controller="Subject" asp-antiforgery="true">
+            <div class="validation" asp-validation-summary="ModelOnly" />
+            @for (int i = 0; i < Model.ProblemIds.Count; i++)
+            {
+                var problem = Model.Problems.FirstOrDefault(p => p.Id == Model.ProblemIds[i]);
+                <div class="text-left border border-primary p-2 mb-2">
+                    <h4>№@(Model.ProblemIds[i]) - Задание @problem.Number<br /></h4>
+                    @{
+                        var pictureOfConditions = Model.Pictures.Where(p => p.ProblemId == Model.ProblemIds[i] && p.IsSolve == false);
+                        foreach (var picture in pictureOfConditions)
+                        {
+                            <div class="text-center">
+                                <img style='max-height: 150px; max-width: 100%; min-height: 60px' src="data:image/jpeg;base64,@(Convert.ToBase64String(picture.Content))" alt="@(picture.Alt)" />
+                            </div>
+                        }
+                    }
+                    <br />
+                    <input class="form-control" asp-for="Answers[i]" />
+                    <input hidden asp-for="ProblemIds[i]" />
+                </div>
+            }
+            <span asp-validation-for="Answers"></span>
+            <button type="submit" class="btnSubmit">Проверить ответы</button>
+        </form>
+    }
+</div>
+

@@ -1,0 +1,28 @@
+﻿@model int
+@{
+    ViewData["Title"] = ViewBag.Subject;
+}
+
+<div class="text-center">
+    <h1 class="display-4">Вы выбрали - @ViewBag.Subject</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <a asp-controller="Subject" asp-action="RandomTest" asp-route-subjectId="@Model" class="themeBtn">Составить случайный вариант - тестовая часть</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <a asp-controller="Subject" asp-action="AllTask" asp-route-subjectId="@Model" class="themeBtn3">Показать все задания</a>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <div class="col-md-6">
+            <form class="input-group input-group-lg" method="get" asp-action="Variant" asp-controller="Subject">
+                <input class="form-control" type="text" placeholder="Найти вариант по номеру" name="optionId">
+                <button class="themeBtn2" type="submit">Поиск</button>
+            </form>
+        </div>
+    </div>
+</div>
