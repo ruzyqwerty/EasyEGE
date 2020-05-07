@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyEGE.DAL.Repositories
 {
@@ -22,11 +23,16 @@ namespace EasyEGE.DAL.Repositories
             db.ProblemOptions.Add(item);
         }
 
+        public async Task CreateAsync(ProblemOption item)
+        {
+            await db.ProblemOptions.AddAsync(item);
+        }
+
         public void Delete(int id)
         {
-            ProblemOption picture = db.ProblemOptions.Find(id);
-            if (picture != null)
-                db.ProblemOptions.Remove(picture);
+            ProblemOption problemOption = db.ProblemOptions.Find(id);
+            if (problemOption != null)
+                db.ProblemOptions.Remove(problemOption);
         }
 
         public IEnumerable<ProblemOption> Find(Func<ProblemOption, bool> predicate)

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyEGE.DAL.Repositories
 {
@@ -20,6 +21,12 @@ namespace EasyEGE.DAL.Repositories
         public void Create(Picture item)
         {
             db.Pictures.Add(item);
+            db.SaveChanges();
+        }
+
+        public Task CreateAsync(Picture item)
+        {
+            throw new NotImplementedException();
         }
 
         public void Delete(int id)
@@ -27,6 +34,7 @@ namespace EasyEGE.DAL.Repositories
             Picture picture = db.Pictures.Find(id);
             if (picture != null)
                 db.Pictures.Remove(picture);
+            db.SaveChanges();
         }
 
         public IEnumerable<Picture> Find(Func<Picture, bool> predicate)
@@ -47,6 +55,7 @@ namespace EasyEGE.DAL.Repositories
         public void Update(Picture item)
         {
             db.Entry(item).State = EntityState.Modified;
+            db.SaveChanges();
         }
     }
 }

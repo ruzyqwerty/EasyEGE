@@ -9,5 +9,8 @@ namespace EasyEGE.BLL.Interfaces
     {
         Subject GetSubject(int? id);
         Subject GetSubject(string name);
+        IEnumerable<string> GetSubjectsNames();
+        void Dispose();
+        IEnumerable<Subject> GetSubjects();
     }
 }

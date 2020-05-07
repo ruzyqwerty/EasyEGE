@@ -8,16 +8,16 @@
         <div class="note">Составить вариант</div>
         <form asp-controller="Subject" asp-action="AddOption" method="get">
             <label>Выберите предмет</label><br />
-            <select asp-for="Subject" class="form-control">
+            <select asp-for="SubjectName" class="form-control">
                 @foreach (var subject in Model.Subjects)
                 {
                     <option value="@subject.Name">@subject.Name</option>
                 }
-                <option selected hidden value="@Model.Subject">@Model.Subject</option>
+                <option selected hidden value="@Model.SubjectName">@Model.SubjectName</option>
             </select>
             <label>Напишите номер задания для поиска</label><br />
             <input class="form-control" type="text" asp-for="Number" />
-            <input class="btn-light" type="submit" value="Filter" />
+            <input class="btn-light" type="submit" value="Отфильтровать" />
         </form>
         <br />
         <form class="form-content" asp-action="AddOption" asp-controller="Subject" enctype="multipart/form-data" method="post">

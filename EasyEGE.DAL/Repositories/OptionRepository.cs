@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EasyEGE.DAL.Repositories
 {
@@ -19,6 +20,11 @@ namespace EasyEGE.DAL.Repositories
         public void Create(Option item)
         {
             db.Options.Add(item);
+        }
+
+        public async Task CreateAsync(Option item)
+        {
+            await db.Options.AddAsync(item);
         }
 
         public void Delete(int id)

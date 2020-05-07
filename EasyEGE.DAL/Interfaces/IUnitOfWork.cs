@@ -10,7 +10,8 @@ namespace EasyEGE.DAL.Interfaces
         IRepository<Option> Options { get; }
         IRepository<Picture> Pictures { get; }
         IRepository<ProblemOption> ProblemOptions { get; }
-        IRepository<Subject> Subject { get; }
+        IRepository<Subject> Subjects { get; }
+        IRepository<User> Users { get; }
         void Save();
         Task SaveAsync();
     }

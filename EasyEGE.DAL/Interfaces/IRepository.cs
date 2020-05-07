@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace EasyEGE.DAL.Interfaces
 {
@@ -9,6 +10,7 @@ namespace EasyEGE.DAL.Interfaces
         T Get(int id);
         IEnumerable<T> Find(Func<T, Boolean> predicate);
         void Create(T item);
+        Task CreateAsync(T item);
         void Update(T item);
         void Delete(int id);
     }
