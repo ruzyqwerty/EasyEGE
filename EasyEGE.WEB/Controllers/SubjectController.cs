@@ -37,36 +37,50 @@ namespace EasyEGE.Controllers
 
         public async Task<IActionResult> Index(int subjectId)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-                ViewBag.Name = user.Name;
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    ViewBag.Name = user.Name;
+                }
+                var subject = _subjectService.GetSubject(subjectId);
+                ViewBag.Subject = subject.Name;
+                return View("Index", subjectId);
             }
-            var subject = _subjectService.GetSubject(subjectId);
-            ViewBag.Subject = subject.Name;
-            return View("Index", subjectId);
+            catch (Exception exc)
+            {
+                return base.RedirectToAction("Error", "Home", new ErrorViewModel { Message = exc.Message });
+            }
         }
 
         [Authorize(Roles = "Администратор")]
         [HttpGet]
         public async Task<IActionResult> AddTask(int? subjectId)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-                ViewBag.Name = user.Name;
-                ProblemViewModel model = new ProblemViewModel
+                if (User.Identity.IsAuthenticated)
                 {
-                    Subjects = _subjectService.GetSubjectsNames().ToList()
-                };
-                if (subjectId != null)
-                {
-                    var subject = _subjectService.GetSubject(subjectId);
-                    model.Subject = subject.Name;
+                    var user = await _userManager.GetUserAsync(User);
+                    ViewBag.Name = user.Name;
+                    ProblemViewModel model = new ProblemViewModel
+                    {
+                        Subjects = _subjectService.GetSubjectsNames().ToList()
+                    };
+                    if (subjectId != null)
+                    {
+                        var subject = _subjectService.GetSubject(subjectId);
+                        model.Subject = subject.Name;
+                    }
+                    return View("AddTask", model);
                 }
-                return View("AddTask", model);
+                return RedirectToAction("Login", "Account");
             }
-            return RedirectToAction("Login", "Account");
+            catch (Exception exc)
+            {
+                return base.RedirectToAction("Error", "Home", new ErrorViewModel { Message = exc.Message });
+            }
         }
 
         [Authorize(Roles = "Администратор")]
@@ -110,22 +124,29 @@ namespace EasyEGE.Controllers
 
         public async Task<IActionResult> AllTask(int subjectId)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-                ViewBag.Name = user.Name;
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    ViewBag.Name = user.Name;
+                }
+                var subject = _subjectService.GetSubject(subjectId);
+                ViewBag.Subject = subject.Name;
+                AllTaskViewModel model = new AllTaskViewModel
+                {
+                    Problems = _problemService.GetProblemsBySubjectId(subjectId).ToList()
+                };
+                foreach (var problem in model.Problems)
+                {
+                    model.Pictures.AddRange(_pictureService.GetPicturesByProblemId(problem.Id));
+                }
+                return base.View(model);
             }
-            var subject = _subjectService.GetSubject(subjectId);
-            ViewBag.Subject = subject.Name;
-            AllTaskViewModel model = new AllTaskViewModel
+            catch (Exception exc)
             {
-                Problems = _problemService.GetProblemsBySubjectId(subjectId).ToList()
-            };
-            foreach (var problem in model.Problems)
-            {
-                model.Pictures.AddRange(_pictureService.GetPicturesByProblemId(problem.Id));
+                return base.RedirectToAction("Error", "Home", new ErrorViewModel { Message = exc.Message });
             }
-            return View(model);
         }
 
         [Authorize(Roles = "Администратор")]
@@ -138,29 +159,36 @@ namespace EasyEGE.Controllers
         [HttpGet]
         public async Task<IActionResult> RandomTest(int subjectId)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-                ViewBag.Name = user.Name;
-            }
-            var subject = _subjectService.GetSubject(subjectId);
-            ViewBag.Subject = subject.Name;
-            var model = new RandomTestViewModel();
-            var problemsOfSubject = _problemService.GetProblemsBySubjectId(subjectId);
-            for (int i = 1; i <= subject.MaxNumberInTest; i++)
-            {
-                var problemsOfNumber = problemsOfSubject.Where(p => p.Number == i).ToList();
-                if (problemsOfNumber.Count > 0)
+                if (User.Identity.IsAuthenticated)
                 {
-                    var problem = problemsOfNumber[new Random().Next(0, problemsOfNumber.Count)];
-                    model.ProblemIds.Add(problem.Id);
-                    model.Pictures.AddRange(_pictureService.GetPicturesByProblemId(problem.Id));
-                    model.Problems.Add(problem);
-                    model.SubjectId = subjectId;
+                    var user = await _userManager.GetUserAsync(User);
+                    ViewBag.Name = user.Name;
                 }
+                var subject = _subjectService.GetSubject(subjectId);
+                ViewBag.Subject = subject.Name;
+                var model = new RandomTestViewModel();
+                var problemsOfSubject = _problemService.GetProblemsBySubjectId(subjectId);
+                for (int i = 1; i <= subject.MaxNumberInTest; i++)
+                {
+                    var problemsOfNumber = problemsOfSubject.Where(p => p.Number == i).ToList();
+                    if (problemsOfNumber.Count > 0)
+                    {
+                        var problem = problemsOfNumber[new Random().Next(0, problemsOfNumber.Count)];
+                        model.ProblemIds.Add(problem.Id);
+                        model.Pictures.AddRange(_pictureService.GetPicturesByProblemId(problem.Id));
+                        model.Problems.Add(problem);
+                        model.SubjectId = subjectId;
+                    }
+                }
+                model.Answers = new string[model.ProblemIds.Count];
+                return View(model);
             }
-            model.Answers = new string[model.ProblemIds.Count];
-            return View(model);
+            catch (Exception exc)
+            {
+                return base.RedirectToAction("Error", "Home", new ErrorViewModel { Message = exc.Message });
+            }
         }
 
         [HttpPost]
@@ -183,50 +211,67 @@ namespace EasyEGE.Controllers
 
         public async Task<IActionResult> Answers(AnswerViewModel model)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-                ViewBag.Name = user.Name;
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    ViewBag.Name = user.Name;
+                }
+                var subject = _subjectService.GetSubject(model.SubjectId);
+                ViewBag.Subject = subject.Name;
+                foreach (var id in model.ProblemIds)
+                {
+                    var problem = _problemService.GetProblem(id);
+                    model.Problems.Add(problem);
+                }
+                return View(model);
             }
-            var subject = _subjectService.GetSubject(model.SubjectId);
-            ViewBag.Subject = subject.Name;
-            foreach (var id in model.ProblemIds)
+            catch (Exception exc)
             {
-                var problem = _problemService.GetProblem(id);
-                model.Problems.Add(problem);
+                return base.RedirectToAction("Error", "Home", new ErrorViewModel { Message = exc.Message });
             }
-            return View(model);
         }
 
         [Authorize(Roles = "Администратор, Учитель")]
         [HttpGet]
         public async Task<IActionResult> AddOption(string subjectName, int? number)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-                ViewBag.Name = user.Name;
-                AddOptionViewModel model = new AddOptionViewModel
+                if (User.Identity.IsAuthenticated)
                 {
-                    Subjects = _subjectService.GetSubjects().ToList(),
-                    Problems = _problemService.GetProblems().ToList(),
-                    Pictures = _pictureService.GetPictures().ToList()
-                };
+                    var user = await _userManager.GetUserAsync(User);
+                    ViewBag.Name = user.Name;
+                    AddOptionViewModel model = new AddOptionViewModel
+                    {
+                        Subjects = _subjectService.GetSubjects().ToList(),
+                        Problems = _problemService.GetProblems().ToList(),
+                        Pictures = _pictureService.GetPictures().ToList()
+                    };
 
-                if (!(String.IsNullOrWhiteSpace(subjectName)))
-                {
-                    var subject = _subjectService.GetSubject(subjectName);
-                    model.Problems = model.Problems.Where(p => p.SubjectId == subject.Id).ToList();
-                    model.SubjectName = subject.Name;
-                }
+                    if (!(String.IsNullOrWhiteSpace(subjectName)))
+                    {
+                        var subject = _subjectService.GetSubject(subjectName);
+                        model.Problems = model.Problems.Where(p => p.SubjectId == subject.Id).ToList();
+                        model.SubjectName = subject.Name;
+                    }
 
-                if (number != null)
-                {
-                    model.Problems = model.Problems.Where(p => p.Number == number).ToList();
+                    if (number != null)
+                    {
+                        model.Problems = model.Problems.Where(p => p.Number == number).ToList();
+                    }
+                    return View("AddOption", model);
                 }
-                return View("AddOption", model);
+                return RedirectToAction("Login", "Account");
             }
-            return RedirectToAction("Login", "Account");
+            catch (Exception exc)
+            {
+                return base.RedirectToAction("Error", "Home", new ErrorViewModel
+                {
+                    Message = exc.Message
+                });
+            }
         }
 
         [Authorize(Roles = "Администратор, Учитель")]
@@ -256,28 +301,35 @@ namespace EasyEGE.Controllers
         [HttpGet]
         public async Task<IActionResult> Variant(int optionId)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                var user = await _userManager.GetUserAsync(User);
-                ViewBag.Name = user.Name;
+                if (User.Identity.IsAuthenticated)
+                {
+                    var user = await _userManager.GetUserAsync(User);
+                    ViewBag.Name = user.Name;
+                }
+                var option = _optionService.GetOption(optionId);
+                var subject = _subjectService.GetSubject(option.SubjectId);
+                var whoAdd = _userService.GetUserNameById(option.UserId);
+                ViewBag.Subject = subject.Name;
+                var problemOptions = _optionService.GetProblemOptions(option.Id);
+                var model = new VariantViewModel
+                {
+                    UserName = whoAdd,
+                    SubjectId = subject.Id
+                };
+                foreach (var po in problemOptions)
+                {
+                    var problem = _problemService.GetProblem(po.ProblemId);
+                    model.Problems.Add(problem);
+                    model.Pictures.AddRange(_pictureService.GetPicturesByProblemId(problem.Id));
+                }
+                return View(model);
             }
-            var option = _optionService.GetOption(optionId);
-            var subject = _subjectService.GetSubject(option.SubjectId);
-            var whoAdd = _userService.GetUserNameById(option.UserId);
-            ViewBag.Subject = subject.Name;
-            var problemOptions = _optionService.GetProblemOptions(option.Id);
-            var model = new VariantViewModel
+            catch (Exception exc)
             {
-                UserName = whoAdd,
-                SubjectId = subject.Id
-            };
-            foreach (var po in problemOptions)
-            {
-                var problem = _problemService.GetProblem(po.ProblemId);
-                model.Problems.Add(problem);
-                model.Pictures.AddRange(_pictureService.GetPicturesByProblemId(problem.Id));
+                return base.RedirectToAction("Error", "Home", new ErrorViewModel { Message = exc.Message });
             }
-            return View(model);
         }
 
         [HttpPost]

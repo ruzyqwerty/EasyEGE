@@ -1,5 +1,4 @@
-﻿using EasyEGE.BLL.Infrastructure;
-using EasyEGE.BLL.Interfaces;
+﻿using EasyEGE.BLL.Interfaces;
 using EasyEGE.DAL.Entities;
 using EasyEGE.DAL.Interfaces;
 using System;
@@ -29,20 +28,20 @@ namespace EasyEGE.BLL.Services
         public Subject GetSubject(int? id)
         {
             if (id == null)
-                throw new ValidationException("Не указан id предмета","");
+                throw new Exception("Не указан id предмета");
             var subject = Database.Subjects.Get(id.Value);
             if (subject == null)
-                throw new ValidationException($"Не найден предмет с указанным id - {id}", "");
+                throw new Exception($"Не найден предмет с указанным id - {id}");
             return subject;
         }
 
         public Subject GetSubject(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ValidationException("Не указано название предмета", "");
+                throw new Exception("Не указано название предмета");
             var subject = Database.Subjects.Find(s => s.Name == name).FirstOrDefault();
             if (subject == null)
-                throw new ValidationException("Не найден предмет с указанным названием", "");
+                throw new Exception("Не найден предмет с указанным названием");
             return subject;
         }
 

@@ -128,9 +128,11 @@ namespace EasyEGE.Controllers
                 List<OptionViewModel> options = new List<OptionViewModel>();
                 foreach (var option in allOptions)
                 {
-                    var newOption = new OptionViewModel();
-                    newOption.Id = option.Id;
-                    newOption.Subject = _subjectService.GetSubject(option.SubjectId).Name;
+                    var newOption = new OptionViewModel
+                    {
+                        Id = option.Id,
+                        Subject = _subjectService.GetSubject(option.SubjectId).Name
+                    };
                     options.Add(newOption);
                 }
                 return View("Profile", options);

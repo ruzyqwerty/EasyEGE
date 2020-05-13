@@ -1,5 +1,4 @@
-﻿using EasyEGE.BLL.Infrastructure;
-using EasyEGE.BLL.Interfaces;
+﻿using EasyEGE.BLL.Interfaces;
 using EasyEGE.DAL.Entities;
 using EasyEGE.DAL.Interfaces;
 using System;
@@ -59,7 +58,7 @@ namespace EasyEGE.BLL.Services
         public IEnumerable<Option> GetAllUserOptions(string userId)
         {
             if (string.IsNullOrWhiteSpace(userId))
-                throw new ValidationException("", "");
+                throw new Exception("Нет пользователя с таким id");
             var options = Database.Options.Find(o => o.UserId == userId);
             return options;
         }
@@ -67,20 +66,20 @@ namespace EasyEGE.BLL.Services
         public Option GetOption(int? id)
         {
             if (id == null)
-                throw new ValidationException("Не указан id варианта", "");
+                throw new Exception("Не указан id варианта");
             var option = Database.Options.Get(id.Value);
             if (option == null)
-                throw new ValidationException("Нет варианта с таким id", "");
+                throw new Exception("Нет варианта с таким id");
             return option;
         }
 
         public IEnumerable<ProblemOption> GetProblemOptions(int? optionId)
         {
             if (optionId == null)
-                throw new ValidationException("Не указан id варианта", "");
+                throw new Exception("Не указан id варианта");
             var problemOptions = Database.ProblemOptions.Find(po => po.OptionId == optionId);
             if (problemOptions.Count() == 0)
-                throw new ValidationException("Нет связей с вариантом с таким id", "");
+                throw new Exception("Нет связей с вариантом с таким id");
             return problemOptions;
         }
     }

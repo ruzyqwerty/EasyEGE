@@ -1,5 +1,4 @@
-﻿using EasyEGE.BLL.Infrastructure;
-using EasyEGE.BLL.Interfaces;
+﻿using EasyEGE.BLL.Interfaces;
 using EasyEGE.DAL.Entities;
 using EasyEGE.DAL.Interfaces;
 using System;
@@ -32,7 +31,7 @@ namespace EasyEGE.BLL.Services
         public IEnumerable<Picture> GetPicturesByProblemId(int? problemId)
         {
             if (problemId == null)
-                throw new ValidationException("Не указан id задачи", "");
+                throw new Exception("Не указан id задачи");
             var pictures = Database.Pictures.Find(p => p.ProblemId == problemId);
             return pictures;
         }

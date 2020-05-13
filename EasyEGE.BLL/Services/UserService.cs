@@ -1,5 +1,4 @@
-﻿using EasyEGE.BLL.Infrastructure;
-using EasyEGE.BLL.Interfaces;
+﻿using EasyEGE.BLL.Interfaces;
 using EasyEGE.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -24,7 +23,7 @@ namespace EasyEGE.BLL.Services
         public string GetUserNameById(string id)
         {
             if (string.IsNullOrWhiteSpace(id))
-                throw new ValidationException("Не указан id пользователя", "");
+                throw new Exception("Не указан id пользователя");
             var user = Database.Users.Find(u => u.Id == id).FirstOrDefault();
             return user.Name;
         }
