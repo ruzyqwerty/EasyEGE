@@ -23,9 +23,10 @@
                 }
                 <br />
                 <input class="form-control" name="answers" />
-                <input hidden name="problemsid" />
+                <input hidden name="problemsId" value="@Model.Problems[i].Id" />
             </div>
         }
+        <input hidden name="subjectId" value="@Model.SubjectId" />
         <button type="submit" class="btnSubmit">Проверить ответы</button>
     </form>
 </div>

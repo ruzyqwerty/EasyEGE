@@ -5,6 +5,8 @@ using EasyEGE.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using EasyEGE.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
+using EasyEGE.BLL.Interfaces;
 
 namespace EasyEGE.Controllers
 {
@@ -13,12 +15,14 @@ namespace EasyEGE.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IOptionService _optionService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, IOptionService optionService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _optionService = optionService;
         }
 
         [HttpGet]
@@ -107,6 +111,19 @@ namespace EasyEGE.Controllers
                 ViewBag.Name = user.Name;
             }
             return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                ViewBag.Name = user.Name;
+                var options = _optionService.GetAllUserOptions(user.Id);
+                return View("Profile", options);
+            }
+            return RedirectToAction("Login", "Account");
         }
     }
 }

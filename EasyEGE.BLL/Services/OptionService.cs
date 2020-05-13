@@ -56,6 +56,14 @@ namespace EasyEGE.BLL.Services
             Database.Dispose();
         }
 
+        public IEnumerable<Option> GetAllUserOptions(string userId)
+        {
+            if (string.IsNullOrWhiteSpace(userId))
+                throw new ValidationException("", "");
+            var options = Database.Options.Find(o => o.UserId == userId);
+            return options;
+        }
+
         public Option GetOption(int? id)
         {
             if (id == null)

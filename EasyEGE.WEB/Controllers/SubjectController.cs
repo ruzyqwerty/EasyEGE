@@ -268,7 +268,8 @@ namespace EasyEGE.Controllers
             var problemOptions = _optionService.GetProblemOptions(option.Id);
             var model = new VariantViewModel
             {
-                UserName = whoAdd
+                UserName = whoAdd,
+                SubjectId = subject.Id
             };
             foreach (var po in problemOptions)
             {
@@ -280,20 +281,19 @@ namespace EasyEGE.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Variant(string[] answers, List<int> problemsid)
+        public async Task<IActionResult> Variant(string[] answers, List<int> problemsId, int subjectId)
         {
             if (User.Identity.IsAuthenticated)
             {
                 var user = await _userManager.GetUserAsync(User);
                 ViewBag.Name = user.Name;
                 Subject subject = new Subject();
-                if (problemsid.Count > 0)
+                if (problemsId.Count > 0)
                 {
-                    var problem = _problemService.GetProblem(problemsid[0]);
-                    subject = _subjectService.GetSubject(problem.SubjectId);
+                    subject = _subjectService.GetSubject(subjectId);
                     ViewBag.Subject = subject.Name;
                 }
-                return RedirectToAction("Answers", "Subject", new AnswerViewModel { Answers = answers, ProblemIds = problemsid, SubjectId = subject.Id });
+                return RedirectToAction("Answers", "Subject", new AnswerViewModel { Answers = answers, ProblemIds = problemsId, SubjectId = subject.Id });
             }
             return RedirectToAction("Login", "Account");
         }

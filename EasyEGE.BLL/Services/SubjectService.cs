@@ -32,7 +32,7 @@ namespace EasyEGE.BLL.Services
                 throw new ValidationException("Не указан id предмета","");
             var subject = Database.Subjects.Get(id.Value);
             if (subject == null)
-                throw new ValidationException("Не найден предмет с указанным id", "");
+                throw new ValidationException($"Не найден предмет с указанным id - {id}", "");
             return subject;
         }
 

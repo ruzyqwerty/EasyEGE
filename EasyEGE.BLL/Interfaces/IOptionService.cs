@@ -13,5 +13,6 @@ namespace EasyEGE.BLL.Interfaces
         Option GetOption(int? id);
         void Dispose();
         IEnumerable<ProblemOption> GetProblemOptions(int? optionId);
+        IEnumerable<Option> GetAllUserOptions(string userId);
     }
 }
