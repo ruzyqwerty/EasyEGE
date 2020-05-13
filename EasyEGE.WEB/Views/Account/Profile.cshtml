@@ -1,14 +1,12 @@
-﻿@model IEnumerable<EasyEGE.DAL.Entities.Option>
+﻿@model IEnumerable<EasyEGE.WEB.ViewModels.OptionViewModel>
 
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Профиль";
 }
 
-<h1>Profile</h1>
+<h1>Профиль</h1>
+<h2>Ваши составленные варианты</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -16,7 +14,7 @@
                 Id варианта
             </th>
             <th>
-                Id предмета
+                Название предмета
             </th>
             <th></th>
         </tr>
@@ -28,7 +26,7 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SubjectId)
+                @Html.DisplayFor(modelItem => item.Subject)
             </td>
             <td>
                 <a asp-action="Variant" asp-controller="Subject" asp-route-optionId="@item.Id">Открыть</a>

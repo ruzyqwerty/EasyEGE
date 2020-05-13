@@ -7,6 +7,8 @@ using System.Linq;
 using EasyEGE.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using EasyEGE.BLL.Interfaces;
+using EasyEGE.WEB.ViewModels;
+using System.Collections.Generic;
 
 namespace EasyEGE.Controllers
 {
@@ -16,13 +18,15 @@ namespace EasyEGE.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IOptionService _optionService;
+        private readonly ISubjectService _subjectService;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, IOptionService optionService)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> roleManager, IOptionService optionService, ISubjectService subjectService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _optionService = optionService;
+            _subjectService = subjectService;
         }
 
         [HttpGet]
@@ -120,7 +124,15 @@ namespace EasyEGE.Controllers
             {
                 var user = await _userManager.GetUserAsync(User);
                 ViewBag.Name = user.Name;
-                var options = _optionService.GetAllUserOptions(user.Id);
+                var allOptions = _optionService.GetAllUserOptions(user.Id);
+                List<OptionViewModel> options = new List<OptionViewModel>();
+                foreach (var option in allOptions)
+                {
+                    var newOption = new OptionViewModel();
+                    newOption.Id = option.Id;
+                    newOption.Subject = _subjectService.GetSubject(option.SubjectId).Name;
+                    options.Add(newOption);
+                }
                 return View("Profile", options);
             }
             return RedirectToAction("Login", "Account");
