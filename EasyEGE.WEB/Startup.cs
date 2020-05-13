@@ -31,6 +31,14 @@ namespace EasyEGE.WEB
 
             services.AddTransient<ISubjectService, SubjectService>();
 
+            services.AddTransient<IProblemService, ProblemService>();
+
+            services.AddTransient<IOptionService, OptionService>();
+
+            services.AddTransient<IUserService, UserService>();
+
+            services.AddTransient<IPictureService, PictureService>();
+
             services.AddIdentity<User, IdentityRole>().AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddDbContext<ApplicationContext>(options =>options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

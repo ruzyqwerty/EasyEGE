@@ -16,6 +16,7 @@ namespace EasyEGE.DAL.Repositories
         private ProblemOptionRepository problemOptionRepository;
         private ProblemRepository problemRepository;
         private SubjectRepository subjectRepository;
+        private UserRepository userRepository;
 
         public UnitOfWork(ApplicationContext context)
         {
@@ -62,13 +63,23 @@ namespace EasyEGE.DAL.Repositories
             }
         }
 
-        public IRepository<Subject> Subject
+        public IRepository<Subject> Subjects
         {
             get
             {
                 if (subjectRepository == null)
                     subjectRepository = new SubjectRepository(db);
                 return subjectRepository;
+            }
+        }
+
+        public IRepository<User> Users
+        {
+            get
+            {
+                if (userRepository == null)
+                    userRepository = new UserRepository(db);
+                return userRepository;
             }
         }
 

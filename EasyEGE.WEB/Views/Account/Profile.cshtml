@@ -1,0 +1,37 @@
+﻿@model IEnumerable<EasyEGE.WEB.ViewModels.OptionViewModel>
+
+@{
+    ViewData["Title"] = "Профиль";
+}
+
+<h1>Профиль</h1>
+<h2>Ваши составленные варианты</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id варианта
+            </th>
+            <th>
+                Название предмета
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                <a asp-action="Variant" asp-controller="Subject" asp-route-optionId="@item.Id">Открыть</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

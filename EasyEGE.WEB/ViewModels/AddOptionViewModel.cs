@@ -6,7 +6,7 @@ namespace EasyEGE.ViewModels
 {
     public class AddOptionViewModel
     {
-        public string? Subject { get; set; }
+        public string SubjectName { get; set; }
         public List<Subject> Subjects { get; set; }
         public List<int> ProblemIds { get; set; }
 

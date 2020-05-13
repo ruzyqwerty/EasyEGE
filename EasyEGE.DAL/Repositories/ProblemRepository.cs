@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyEGE.DAL.Repositories
 {
@@ -20,6 +21,11 @@ namespace EasyEGE.DAL.Repositories
         public void Create(Problem item)
         {
             db.Problems.Add(item);
+        }
+
+        public Task CreateAsync(Problem item)
+        {
+            throw new NotImplementedException();
         }
 
         public void Delete(int id)

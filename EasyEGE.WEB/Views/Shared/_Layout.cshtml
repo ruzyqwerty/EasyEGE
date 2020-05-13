@@ -23,7 +23,7 @@
                                 <li class="nav-item">
                                     @if (ViewBag.Subject != null)
                                     {
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Subject" asp-action="AddOption" asp-route-subjectId="@Model">Составить вариант</a>
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Subject" asp-action="AddOption" asp-route-subjectName="@ViewBag.Subject">Составить вариант</a>
                                     }
                                     else
                                     {
@@ -58,7 +58,7 @@
                                 </li>
                             }
                             <li class="nav-item">
-                                <a class="nav-link text-dark">Привет, @ViewBag.Name!</a>
+                                <a class="nav-link text-dark" asp-action="Profile" asp-controller="Account">Привет, @ViewBag.Name!</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Выйти</a>
